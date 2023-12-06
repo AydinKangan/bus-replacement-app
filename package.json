@@ -27,6 +27,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@floating-ui/dom": "^1.5.3",
     "axios": "^1.6.2"
   }
 }

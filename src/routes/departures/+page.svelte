@@ -2,32 +2,31 @@
 <script lang="ts">
 
 import { Autocomplete } from '@skeletonlabs/skeleton';
-import type { AutocompleteOption } from '@skeletonlabs/skeleton';
+import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
   import axios from "axios";
   import { onMount } from "svelte";
+  import { popup } from '@skeletonlabs/skeleton';
 
   let allStations: App.Station[];
   let stationOptions: AutocompleteOption<string>[]
-  let selectedStation: App.Station;
+  let selectedStation: App.Station | undefined;
   let inputStation = '';
 
-
-const flavorOptions: AutocompleteOption<string>[] = [
-	{ label: 'Vanilla', value: 'vanilla', keywords: 'plain, basic', meta: { healthy: false } },
-	{ label: 'Chocolate', value: 'chocolate', keywords: 'dark, white', meta: { healthy: false } },
-	{ label: 'Strawberry', value: 'strawberry', keywords: 'fruit', meta: { healthy: true } },
-	{ label: 'Neapolitan', value: 'neapolitan', keywords: 'mix, strawberry, chocolate, vanilla', meta: { healthy: false } },
-	{ label: 'Pineapple', value: 'pineapple', keywords: 'fruit', meta: { healthy: true } },
-	{ label: 'Peach', value: 'peach', keywords: 'fruit', meta: { healthy: true } }
-];
-				
-
+			
 
 function onStationSelection(event: CustomEvent<AutocompleteOption<string>>): void {
-	inputStation = event.detail.label;
+	
+    selectedStation = allStations.find((station: App.Station) => station.stopId.toString() === event.detail.value);
+    inputStation = "";
 }
 				
 
+const popupClick: PopupSettings = {
+	event: 'click',
+	target: 'popupClick',
+	placement: 'bottom'
+};
+					
 
 onMount(async () => {
   try {
@@ -44,11 +43,10 @@ onMount(async () => {
         };
       });
 
-      console.log(stationOptions);
     }
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
-    // Handle the error as needed, e.g., show a user-friendly message.
+    
   }
 });
 
@@ -57,8 +55,11 @@ onMount(async () => {
 
 
 <div>
+    <button class="btn variant-filled" use:popup={popupClick}>{selectedStation ? selectedStation.stopName : "Select a station"}</button>
+    
+<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1" data-popup="popupClick">
     <input class="input" type="search" name="demo" bind:value={inputStation} placeholder="Search..." />
-<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1">
+
 	<Autocomplete bind:input={inputStation} options={stationOptions} on:selection={onStationSelection} />
 </div>
 
