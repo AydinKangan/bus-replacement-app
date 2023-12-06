@@ -11,6 +11,7 @@ import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
   let stationOptions: AutocompleteOption<string>[]
   let selectedStation: App.Station | undefined;
   let inputStation = '';
+  let departureRoutes: any[];
 
   const popupClick: PopupSettings = {
 	event: 'click',
@@ -30,7 +31,7 @@ const getDepartures = async () => {
         },
       });
 
-      console.log(request.data);
+      departureRoutes = request.data;
     } catch (error) {
       console.error("Error while making the request:", error);
     }
@@ -84,5 +85,39 @@ onMount(async () => {
 
 	<Autocomplete bind:input={inputStation} options={stationOptions} on:selection={onStationSelection} />
 </div>
+
+<div class="table-container">
+	<!-- Native Table Element -->
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Destination</th>
+   
+          <th>Departing</th>
+          <th>Departing</th>
+          <th>Departing</th>
+          <th>Departing</th>
+          <th>Departing</th>
+
+    
+			
+			</tr>
+		</thead>
+    {#if departureRoutes}
+    {#each departureRoutes as route}
+    <tbody>
+      <tr>
+        <td>{route.direction_name}</td>
+      </tr>
+  </tbody>
+    {/each}
+{/if}
+		
+ 
+	
+	</table>
+</div>
+
+
 
 </div>

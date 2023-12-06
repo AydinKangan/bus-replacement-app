@@ -41,7 +41,6 @@ export const POST: RequestHandler = async ({request}: any) => {
         const directions = getDirections.data;
 
         const uniqueDepartureRoutes = await Array.from(new Set(departures.map((departure: any) => departure.route_id)));
-        console.log(uniqueDepartureRoutes);
 
         const matchingDirections = directions.filter((direction: any) => uniqueDepartureRoutes.includes(direction.route_id));
 
