@@ -7,6 +7,7 @@ import axios from "axios";
 import { onMount } from "svelte";
 import { popup } from '@skeletonlabs/skeleton';
 import { MousePointerSquare } from 'lucide-svelte';
+  import WeatherBar from '$lib/weather-bar.svelte';
 
 let allStations: App.Station[];
 let stationOptions: AutocompleteOption<string>[]
@@ -96,6 +97,7 @@ onMount(async () => {
 
 
 <div>
+  <WeatherBar />
   <div class="pl-[4rem] pt-[2rem]">
     <button class="btn variant-filled" use:popup={popupClick}>
       <span class="mr-2">
