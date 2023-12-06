@@ -6,6 +6,7 @@ import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 import axios from "axios";
 import { onMount } from "svelte";
 import { popup } from '@skeletonlabs/skeleton';
+import { MousePointerSquare } from 'lucide-svelte';
 
 let allStations: App.Station[];
 let stationOptions: AutocompleteOption<string>[]
@@ -95,14 +96,18 @@ onMount(async () => {
 
 
 <div>
-  <div class="p-4">
-    <button class="btn variant-filled" use:popup={popupClick}>{selectedStation ? selectedStation.stopName : "Select a station"}</button>
+  <div class="pl-[4rem] pt-[2rem]">
+    <button class="btn variant-filled" use:popup={popupClick}>
+      <span class="mr-2">
+        {selectedStation ? selectedStation.stopName : "Select a station"}
+      </span>
+      <MousePointerSquare class="w-5 h-5" /></button>
     <div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1" data-popup="popupClick">
-      <input class="input" type="search" name="demo" bind:value={inputStation} placeholder="Search..." />
+      <input class="input h-8 pl-3" type="search" name="demo" bind:value={inputStation} placeholder="Search..." />
       <Autocomplete bind:input={inputStation} options={stationOptions} on:selection={onStationSelection} />
     </div>
   </div>
-    <div class="table-container p-[4rem]">
+    <div class="table-container px-[4rem] py-[2rem]">
       <table class="table table-hover">
         <thead>
           <tr class="">
@@ -119,12 +124,12 @@ onMount(async () => {
             {#if nextDepartures.filter(dep => dep.direction_id === route.direction_id).length > 0}
               <tbody>
                 <tr>
-                    <td class="text-center">{route.direction_name}</td>
+                    <td class="flex flex-col text-center justify-center"><span class="mt-3">{route.direction_name}</span></td>
                   {#each nextDepartures.filter(dep => dep.direction_id === route.direction_id).sort((a, b) => a.time_until_departure - b.time_until_departure) as departure}
                     <td>
                       <span class="flex flex-col text-center">
                         {departure.time_until_departure !== 0 ? `${departure.time_until_departure} min` : "Now"}
-                        <p>Platform: {departure.platform_number}</p>
+                        <p>Platform: {departure.platform_number === null ? "Not Found" : departure.platform_number}</p>
                       </span>
                     </td>
                   {/each}
