@@ -105,9 +105,10 @@ import github_icon from '$lib/images/github_icon.png';
     <div class="login-form-container"> 
       <label class="password-label" for="password">PASSWORD:</label>
       <div class="input-field">
-        <input type="text" id="password" name="password" placeholder="Enter your password" class="rounded-input">
+        <input type="password" id="password" name="password" placeholder="Enter your password" class="rounded-input">
       </div>
     </div>
+    
 
     <!-- Red Button group -->
     <div class="button-group">
