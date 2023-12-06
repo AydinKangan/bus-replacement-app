@@ -12,20 +12,42 @@ import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
   let selectedStation: App.Station | undefined;
   let inputStation = '';
 
-			
-
-function onStationSelection(event: CustomEvent<AutocompleteOption<string>>): void {
-	
-    selectedStation = allStations.find((station: App.Station) => station.stopId.toString() === event.detail.value);
-    inputStation = "";
-}
-				
-
-const popupClick: PopupSettings = {
+  const popupClick: PopupSettings = {
 	event: 'click',
 	target: 'popupClick',
 	placement: 'bottom'
 };
+
+
+const getDepartures = async () => {
+  if (selectedStation) {
+    try {
+      const request = await axios.post("/api/get-departures", {
+        stopId: selectedStation.stopId,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log(request.data);
+    } catch (error) {
+      console.error("Error while making the request:", error);
+    }
+  }
+}
+
+			
+
+const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>)  => {
+    selectedStation = await allStations.find((station: App.Station) => station.stopId.toString() === event.detail.value);
+
+   await getDepartures();
+    inputStation = "";
+}
+				
+
+
 					
 
 onMount(async () => {
