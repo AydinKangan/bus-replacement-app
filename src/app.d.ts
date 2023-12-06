@@ -5,6 +5,7 @@ declare namespace App {
 	interface Station {
 		stopId: number;
 		stopName: string;
+		stopSuburb: string;
 	}
 	// interface PageData {}
 	// interface Error {}

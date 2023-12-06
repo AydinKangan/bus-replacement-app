@@ -16,6 +16,7 @@ export const GET: RequestHandler = async () => {
     const data = response.data.map((stop: any) => ({
         stopId: stop.stop_id,
         stopName: stop.stop_name,
+        stopSuburb: stop.stop_suburb,
     }));
 
 
