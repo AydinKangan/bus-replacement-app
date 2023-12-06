@@ -3,22 +3,22 @@
 
 import { Autocomplete } from '@skeletonlabs/skeleton';
 import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
-  import axios from "axios";
-  import { onMount } from "svelte";
-  import { popup } from '@skeletonlabs/skeleton';
+import axios from "axios";
+import { onMount } from "svelte";
+import { popup } from '@skeletonlabs/skeleton';
 
-  let allStations: App.Station[];
-  let stationOptions: AutocompleteOption<string>[]
-  let selectedStation: App.Station | undefined;
-  let inputStation = '';
-  let departureRoutes: any[];
+let allStations: App.Station[];
+let stationOptions: AutocompleteOption<string>[]
+let selectedStation: App.Station | undefined;
+let inputStation = '';
+let departureRoutes: any[];
+let nextDepartures: any[];
 
-  const popupClick: PopupSettings = {
-	event: 'click',
-	target: 'popupClick',
-	placement: 'bottom'
+const popupClick: PopupSettings = {
+  event: 'click',
+  target: 'popupClick',
+  placement: 'bottom'
 };
-
 
 const getDepartures = async () => {
   if (selectedStation) {
@@ -31,12 +31,29 @@ const getDepartures = async () => {
         },
       });
 
-      departureRoutes = request.data;
+      departureRoutes = request.data.uniqueDirections;
+      const nextDeparturesRes = request.data.nextDepartures;
+
+      const currentTime = new Date().getTime();
+      const departuresWithTime = nextDeparturesRes.map((departure: any) => {
+        const scheduledDepartureTime = new Date(departure.scheduled_departure_utc).getTime();
+        const timeUntilDeparture = Math.floor((scheduledDepartureTime - currentTime) / 60000); // Convert to minutes
+
+        return {
+          platform_number: departure.platform_number,
+          time_until_departure: timeUntilDeparture,
+          direction_id: departure.direction_id,
+        };
+      });
+
+      nextDepartures = departuresWithTime;
     } catch (error) {
       console.error("Error while making the request:", error);
     }
   }
 }
+
+
 
 			
 
@@ -105,13 +122,21 @@ onMount(async () => {
 		</thead>
     {#if departureRoutes}
     {#each departureRoutes as route}
-    <tbody>
-      <tr>
-        <td>{route.direction_name}</td>
-      </tr>
-  </tbody>
+      <tbody>
+        <tr>
+          <td>{route.direction_name}</td>
+          {#each nextDepartures.filter(dep => dep.direction_id === route.direction_id).sort((a, b) => a.time_until_departure - b.time_until_departure) as departure}
+            <td>
+              <span class="flex flex-col text-center">
+              {departure.time_until_departure !== 0 ? `${departure.time_until_departure} min` : "Now"}
+              <p>Platform: {departure.platform_number}</p>
+              </span>
+            </td>
+          {/each}
+        </tr>
+      </tbody>
     {/each}
-{/if}
+  {/if}
 		
  
 	
