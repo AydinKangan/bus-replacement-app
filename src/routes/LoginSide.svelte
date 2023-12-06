@@ -1,6 +1,112 @@
 <script>
-import github_icon from '$lib/images/github_icon.png';
+  import { onMount } from 'svelte';
+  import supabase from './supabase.js';
+
+  let email = '';
+  let password = '';
+  let loginErrorMessage = '';
+
+  const login = async () => {
+    try {
+      const { user, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        console.error('Login error:', error.message);
+        loginErrorMessage = error.message; 
+      } else {
+        console.log('User logged in:', user);
+        loginErrorMessage = '';
+      }
+    } catch (error) {
+      console.error('An error occurred:', error.message);
+      loginErrorMessage = error.message;
+    }
+  };
+
+  const register = async () => {
+    try {
+      const { user, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        console.error('Registration error:', error.message);
+      } else {
+        console.log('User registered:', user);
+        // Redirect or perform other actions after successful registration
+      }
+    } catch (error) {
+      console.error('An error occurred during registration:', error.message);
+    }
+  };
+
+	async function signInGitHub() {
+    console.log("signInGitHub");
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+    });
+    if(data) {
+        console.log("data:", data);
+        user = await supabase.auth.getUser();
+        console.log("user:", user);
+    }
+    if(error) {
+        console.log("error:", error);
+    }
+	}
 </script>
+
+
+<div class="login-side">
+  <!-- Image logo -->
+  <img class="logo" src="https://puffingbilly.com.au/wp-content/uploads/PTV.jpeg" alt="PTV Logo" />
+  <br>
+
+  <!-- Header -->
+  <h2 class="header" style="text-align: center;">TRAIN DEPARTURE <br><br> ASSISTANCE </h2>
+  <br>
+
+  <div class="login-form-container">
+    <label class="email-label" for="email">EMAIL:</label>
+    <div class="input-field">
+      <input type="text" id="email" bind:value={email} placeholder="Enter your email" class="rounded-input">
+    </div>
+    <!-- Display error message -->
+    
+
+    <div class="login-form-container">
+      <label class="password-label" for="password">PASSWORD:</label>
+      <div class="input-field">
+        <input type="password" id="password" bind:value={password} placeholder="Enter your password" class="rounded-input">
+      </div>
+    </div>
+
+    {#if loginErrorMessage}
+      <p class="error-message">{loginErrorMessage}</p>
+    {/if}
+
+  <!-- Red Button group -->
+<div class="button-group">
+  <button class="red-button" on:click={register}>Sign up</button>
+  <button class="red-button" on:click={login}>Login</button>
+</div>
+
+
+    <!-- GitHub button with icon -->
+    <div class="centered-button">
+      <button class="github-button" on:click={()=>signInGitHub()}>
+        <div class="icon-container">
+          <img src="/images/github_icon.png" alt="GitHub Icon" class="icon">
+        </div>
+        Login with GitHub
+      </button>
+    </div>
+  </div>
+</div>
 
 <style>
   @font-face {
@@ -84,47 +190,10 @@ import github_icon from '$lib/images/github_icon.png';
     width: 20px;  
     height: 20px; 
   }
+
+  .error-message {
+  color: red;
+  margin-top: 10px;
+  margin-left: 75px;
+}
 </style>
-
-
-
-
-<div class="login-side">
-  <!-- Image logo -->
-  <img class="logo" src="https://puffingbilly.com.au/wp-content/uploads/PTV.jpeg" alt="PTV Logo" />
-<br>
-  <!-- Header -->
-  <h2 class="header" style="text-align: center;">TRAIN DEPARTURE <br><br> ASSISTANCE </h2>
-<br>
-  <div class="login-form-container">
-    <label class="username-label" for="username">USERNAME:</label>
-    <div class="input-field">
-      <input type="text" id="username" name="username" placeholder="Enter your username" class="rounded-input">
-    </div>
-
-    <div class="login-form-container"> 
-      <label class="password-label" for="password">PASSWORD:</label>
-      <div class="input-field">
-        <input type="password" id="password" name="password" placeholder="Enter your password" class="rounded-input">
-      </div>
-    </div>
-    
-
-    <!-- Red Button group -->
-    <div class="button-group">
-      <button class="red-button">Sign Up</button>
-      <button class="red-button">Login</button>
-    </div>
-
-<!-- GitHub button with icon -->
-<div class="centered-button">
-  <button class="github-button">
-    <div class="icon-container">
-      <img src={github_icon} alt="GitHub Icon" class="icon">
-    </div>
-    Login with GitHub
-  </button>
-</div>
-
-</div>
-</div>
