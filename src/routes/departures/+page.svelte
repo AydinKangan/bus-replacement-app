@@ -95,54 +95,44 @@ onMount(async () => {
 
 
 <div>
+  <div class="p-4">
     <button class="btn variant-filled" use:popup={popupClick}>{selectedStation ? selectedStation.stopName : "Select a station"}</button>
-    
-<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1" data-popup="popupClick">
-    <input class="input" type="search" name="demo" bind:value={inputStation} placeholder="Search..." />
-
-	<Autocomplete bind:input={inputStation} options={stationOptions} on:selection={onStationSelection} />
-</div>
-
-<div class="table-container">
-	<!-- Native Table Element -->
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th>Destination</th>
-   
-          <th>Departing</th>
-          <th>Departing</th>
-          <th>Departing</th>
-          <th>Departing</th>
-          <th>Departing</th>
-
-    
-			
-			</tr>
-		</thead>
-    {#if departureRoutes}
-    {#each departureRoutes as route}
-      <tbody>
-        <tr>
-          <td>{route.direction_name}</td>
-          {#each nextDepartures.filter(dep => dep.direction_id === route.direction_id).sort((a, b) => a.time_until_departure - b.time_until_departure) as departure}
-            <td>
-              <span class="flex flex-col text-center">
-              {departure.time_until_departure !== 0 ? `${departure.time_until_departure} min` : "Now"}
-              <p>Platform: {departure.platform_number}</p>
-              </span>
-            </td>
+    <div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1" data-popup="popupClick">
+      <input class="input" type="search" name="demo" bind:value={inputStation} placeholder="Search..." />
+      <Autocomplete bind:input={inputStation} options={stationOptions} on:selection={onStationSelection} />
+    </div>
+  </div>
+    <div class="table-container p-[4rem]">
+      <table class="table table-hover">
+        <thead>
+          <tr class="">
+            <th class="text-center">Destination</th>
+            <th class="text-center">Departing</th>
+            <th class="text-center">Departing</th>
+            <th class="text-center">Departing</th>
+            <th class="text-center">Departing</th>
+            <th class="text-center">Departing</th>
+          </tr>
+        </thead>
+        {#if departureRoutes}
+          {#each departureRoutes as route}
+            {#if nextDepartures.filter(dep => dep.direction_id === route.direction_id).length > 0}
+              <tbody>
+                <tr>
+                    <td class="text-center">{route.direction_name}</td>
+                  {#each nextDepartures.filter(dep => dep.direction_id === route.direction_id).sort((a, b) => a.time_until_departure - b.time_until_departure) as departure}
+                    <td>
+                      <span class="flex flex-col text-center">
+                        {departure.time_until_departure !== 0 ? `${departure.time_until_departure} min` : "Now"}
+                        <p>Platform: {departure.platform_number}</p>
+                      </span>
+                    </td>
+                  {/each}
+                </tr>
+              </tbody>
+            {/if}
           {/each}
-        </tr>
-      </tbody>
-    {/each}
-  {/if}
-		
- 
-	
-	</table>
-</div>
-
-
-
+        {/if}
+      </table>
+    </div>
 </div>
