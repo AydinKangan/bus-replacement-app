@@ -1,8 +1,8 @@
 
 import type { CustomThemeConfig } from '@skeletonlabs/tw-plugin';
 
-export const myCustomTheme: CustomThemeConfig = {
-    name: 'my-custom-theme',
+export const ptvTheme: CustomThemeConfig = {
+    name: 'ptvTheme',
     properties: {
 		// =~= Theme Properties =~=
 		"--theme-font-family-base": `system-ui`,
