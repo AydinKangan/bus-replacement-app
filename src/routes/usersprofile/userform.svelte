@@ -14,7 +14,7 @@
 
   function handleSubmit() {
     console.log('Submitted:', { firstName, selectedStation });
-
+    
     goto(`/departures`);
   }
 

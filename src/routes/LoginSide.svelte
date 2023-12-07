@@ -8,7 +8,7 @@
 
   const login = async () => {
     try {
-      const { user, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
@@ -17,7 +17,6 @@
         console.error('Login error:', error.message);
         loginErrorMessage = error.message; 
       } else {
-        console.log('User logged in:', user);
         loginErrorMessage = '';
         goto("/usersprofile")
       }
@@ -29,7 +28,7 @@
 
   const register = async () => {
     try {
-      const { user, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: email,
         password: password,
       });
@@ -37,7 +36,6 @@
       if (error) {
         console.error('Registration error:', error.message);
       } else {
-        console.log('User registered:', user);
         goto("/usersprofile")
       }
     } catch (err) {
