@@ -9,7 +9,7 @@ export const GET: RequestHandler = async () => {
     const lon = "144.963058";
 
     const response: AxiosResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`,
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`,
     );
 
     const data = response.data
