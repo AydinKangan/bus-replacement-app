@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+  import { goto } from '$app/navigation';
   import supabase from './supabase.js';
 
   let email = '';
@@ -18,8 +19,9 @@
       } else {
         console.log('User logged in:', user);
         loginErrorMessage = '';
+        goto("/usersprofile")
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('An error occurred:', err.message);
       loginErrorMessage = err.message;
     }
@@ -36,7 +38,7 @@
         console.error('Registration error:', error.message);
       } else {
         console.log('User registered:', user);
-        // Redirect or perform other actions after successful registration
+        goto("/usersprofile")
       }
     } catch (err) {
       console.error('An error occurred during registration:', err);
@@ -47,11 +49,15 @@
     console.log("signInGitHub");
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
+        options: {
+        redirectTo: "http://localhost:5173/usersprofile",
+      },
     });
     if(data) {
         console.log("data:", data);
         const user = await supabase.auth.getUser();
         console.log("user:", user);
+        goto("/usersprofile")
     }
     if(error) {
         console.log("error:", error);
