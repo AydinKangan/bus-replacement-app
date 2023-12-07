@@ -16,7 +16,7 @@
 
 	onDestroy(unsubscribe)
 	
-	console.log(themeContent)
+	// console.log(themeContent)
 			
 </script>
 
