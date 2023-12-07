@@ -16,6 +16,13 @@ let inputStation = '';
 let departureRoutes: any[];
 let nextDepartures: any[];
 
+import { theme } from "../../theme";
+
+
+const skeletonTheme = () => {
+    theme.update(val => val = "skeleton")
+}
+
 const popupClick: PopupSettings = {
   event: 'click',
   target: 'popupClick',
@@ -142,4 +149,9 @@ onMount(async () => {
         {/if}
       </table>
     </div>
+    <div>
+      <button on:click={skeletonTheme}>
+          skeleton Theme
+      </button>
+  </div>
 </div>

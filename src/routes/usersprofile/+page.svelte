@@ -1,5 +1,6 @@
 <script>
-    import Ptvcss from "./Ptvcss.svelte";
+  import Ptvcss from "./ptvcss.svelte";
+
 </script>
 
 <div> 
