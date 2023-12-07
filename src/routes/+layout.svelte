@@ -7,4 +7,6 @@
 			
 </script>
 
+<div class='dark'>
 <slot />
+</div>
