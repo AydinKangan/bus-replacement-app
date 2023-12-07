@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
   import supabase from './supabase.js';
 
   let email = '';
@@ -20,9 +19,9 @@
         console.log('User logged in:', user);
         loginErrorMessage = '';
       }
-    } catch (error) {
-      console.error('An error occurred:', error.message);
-      loginErrorMessage = error.message;
+    } catch (err) {
+      console.error('An error occurred:', err.message);
+      loginErrorMessage = err.message;
     }
   };
 
@@ -39,8 +38,8 @@
         console.log('User registered:', user);
         // Redirect or perform other actions after successful registration
       }
-    } catch (error) {
-      console.error('An error occurred during registration:', error.message);
+    } catch (err) {
+      console.error('An error occurred during registration:', err);
     }
   };
 
@@ -51,7 +50,7 @@
     });
     if(data) {
         console.log("data:", data);
-        user = await supabase.auth.getUser();
+        const user = await supabase.auth.getUser();
         console.log("user:", user);
     }
     if(error) {
