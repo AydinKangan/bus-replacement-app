@@ -7,6 +7,7 @@ import axios from "axios";
 import { onMount } from "svelte";
 import { popup } from '@skeletonlabs/skeleton';
 import { MousePointerSquare } from 'lucide-svelte';
+  import WeatherBar from '$lib/weather-bar.svelte';
 
 let allStations: App.Station[];
 let stationOptions: AutocompleteOption<string>[]
@@ -14,6 +15,13 @@ let selectedStation: App.Station | undefined;
 let inputStation = '';
 let departureRoutes: any[];
 let nextDepartures: any[];
+
+import { theme } from "../../theme";
+
+
+const skeletonTheme = () => {
+    theme.update(val => val = "skeleton")
+}
 
 const popupClick: PopupSettings = {
   event: 'click',
@@ -96,6 +104,7 @@ onMount(async () => {
 
 
 <div>
+  <WeatherBar />
   <div class="pl-[4rem] pt-[2rem]">
     <button class="btn variant-filled" use:popup={popupClick}>
       <span class="mr-2">
@@ -140,4 +149,9 @@ onMount(async () => {
         {/if}
       </table>
     </div>
+    <div>
+      <button on:click={skeletonTheme}>
+          skeleton Theme
+      </button>
+  </div>
 </div>
