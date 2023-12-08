@@ -4,6 +4,7 @@
   import axios from "axios";
   import { MousePointerSquare } from "lucide-svelte";
   import { onMount } from "svelte";
+  import supabase from "../supabase";
 
   let allStations: App.Station[];
   let stationOptions: AutocompleteOption<string>[]
@@ -14,8 +15,25 @@
 
   function handleSubmit() {
     console.log('Submitted:', { firstName, selectedStation });
+    supabase
+      .from("user-data")
+      .insert([
+        {
+          first_name: firstName,
+          stop_id: selectedStation?.stopId,
+          stop_lat: selectedStation?.stopLat,
+          stop_lon: selectedStation?.stopLon,
+          stop_name: selectedStation?.stopName,
+        },
+      ])
+      .then((res) => {
+        if (res.status === 201) {
+          goto(`/departures`);
+        }
+        else {
+          console.log(res)}
+      })
     
-    goto(`/departures`);
   }
 
 
@@ -88,7 +106,7 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
 
 <!-- The form -->
 <main>
-  <form on:submit|preventDefault={handleSubmit}>
+  <div>
     <label for="firstName">First Name</label>
     <input type="text" id="firstName" bind:value={firstName} />
 
@@ -105,6 +123,6 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
       </div>
     </div>
 
-    <button type="submit">Submit</button>
-  </form>
+    <button on:click={handleSubmit}>Submit</button>
+  </div>
 </main>

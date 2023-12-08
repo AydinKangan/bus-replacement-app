@@ -12,7 +12,6 @@ onMount(async () => {
     if (res.data) {
       weather = res.data;
 
-      console.log(weather.main.temp)
     }
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
