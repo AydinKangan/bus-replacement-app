@@ -60,29 +60,63 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
 
 
 <style>
+   /* Add your styles here */
+   .select-station-btn {
+    padding: 0.5rem 1rem;
+    background-color: #000000; /* Example color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 200px;
+    margin-left: -35px;
+    margin-bottom: 50px;
+  }
+
+  .select-station-btn:hover {
+    background-color: #b92929; /* Example color on hover */
+  }
   /* Add your styles here */
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  form {
+    width: 300px; /* Adjust the width as needed */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-bottom: 200px;
+  }
+
   label {
     margin-bottom: 0.5rem;
     display: block;
+    color:black;
   }
 
   input {
     margin-bottom: 1rem;
     padding: 0.5rem;
-    width: 200;
-    color: black;
-  }
+    width: 100%; /* Make the input boxes full width */
+    border: 1px solid #000000;
+    border-radius: 5px; /* Rounded corners */
+    color: rgb(7, 7, 7)  }
 
   button {
     padding: 0.5rem 1rem;
-    background-color: #4caf50;
+    background-color: rgb(141, 11, 8);
     color: white;
     border: none;
+    border-radius: 5px; /* Rounded corners */
     cursor: pointer;
   }
 
   button:hover {
-    background-color: #45a049;
+    background-color: rgb(220, 16, 16);
   }
 </style>
 
@@ -94,11 +128,12 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
 
     <label for="stationName">Station Name</label>
     <div class="pl-[4rem] pt-[2rem]">
-      <button class="btn variant-filled" use:popup={popupClick}>
+      <button class="select-station-btn" use:popup={popupClick}>
         <span class="mr-2">
           {selectedStation ? selectedStation.stopName : "Select a station"}
         </span>
-        <MousePointerSquare class="w-5 h-5" /></button>
+        <MousePointerSquare class="w-5 h-5" />
+      </button>
       <div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1" data-popup="popupClick">
         <input class="input h-8 pl-3" type="search" name="demo" bind:value={inputStation} placeholder="Search..." />
         <Autocomplete bind:input={inputStation} options={stationOptions} on:selection={onStationSelection} />
