@@ -48,8 +48,8 @@
     .melb-image {
       width: 100%;
       height: 100%;
-      margin-left: 90px;
-      margin-right: 170px;
+      margin-left: 50px;
+      margin-right: 100px;
       clip-path: polygon(10% 0, 100% 0, 50% 600%, 0% 100%);
       object-fit: cover;
     }
