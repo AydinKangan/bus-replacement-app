@@ -1,12 +1,14 @@
 
 <script lang="ts">
-
 import { Autocomplete } from '@skeletonlabs/skeleton';
 import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 import axios from "axios";
 import { onMount } from "svelte";
 import { popup } from '@skeletonlabs/skeleton';
 import { MousePointerSquare } from 'lucide-svelte';
+import WeatherBar from '$lib/weather-bar.svelte';
+ 
+
 
 let allStations: App.Station[];
 let stationOptions: AutocompleteOption<string>[]

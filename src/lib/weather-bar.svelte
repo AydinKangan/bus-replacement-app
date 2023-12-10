@@ -57,7 +57,7 @@ $: {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .navbar {
-            background-color: #333;
+            background-color: #000000;
             color: white;
             padding: 10px;
             display: flex;
