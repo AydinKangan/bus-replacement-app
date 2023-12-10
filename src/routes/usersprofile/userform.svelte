@@ -133,70 +133,11 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
 
 
 
-<style>
-   /* Add your styles here */
-   .select-station-btn {
-    padding: 0.5rem 1rem;
-    background-color: #000000; /* Example color */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 200px;
-    margin-left: -35px;
-    margin-bottom: 50px;
-  }
 
-  .select-station-btn:hover {
-    background-color: #b92929; /* Example color on hover */
-  }
-  /* Add your styles here */
-  main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-
-  form {
-    width: 300px; /* Adjust the width as needed */
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    margin-bottom: 200px;
-  }
-
-  label {
-    margin-bottom: 0.5rem;
-    display: block;
-    color:black;
-  }
-
-  input {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    width: 100%; /* Make the input boxes full width */
-    border: 1px solid #000000;
-    border-radius: 5px; /* Rounded corners */
-    color: rgb(7, 7, 7)  }
-
-  button {
-    padding: 0.5rem 1rem;
-    background-color: rgb(141, 11, 8);
-    color: white;
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: rgb(220, 16, 16);
-  }
-</style>
 
 <!-- The form -->
 <main>
-  <div>
+  <div class="old-form">
     <label for="firstName">First Name</label>
     <input type="text" id="firstName" bind:value={firstName} />
 
@@ -217,3 +158,68 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
     <button on:click={handleSubmit}>Submit</button>
   </div>
 </main>
+
+
+<style>
+  /* Add your styles here */
+  .select-station-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+   padding: 0.5rem 1rem;
+   background-color: #000000; /* Example color */
+   color: white;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   margin-left: -35px;
+   margin-bottom: 50px;
+ }
+
+ .select-station-btn:hover {
+   background-color: #b92929; /* Example color on hover */
+ }
+ /* Add your styles here */
+ main {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh;
+ }
+
+ .old-form {
+   width: 300px; /* Adjust the width as needed */
+   padding: 20px;
+   background-color: #ffffff;
+   border-radius: 10px;
+   margin-bottom: 200px;
+ }
+
+ label {
+   margin-bottom: 0.5rem;
+   display: block;
+   color:black;
+ }
+
+ input {
+   margin-bottom: 1rem;
+   padding: 0.5rem;
+   width: 100%; /* Make the input boxes full width */
+   border: 1px solid #000000;
+   border-radius: 5px; /* Rounded corners */
+   color: rgb(7, 7, 7)  }
+
+ button {
+   padding: 0.5rem 1rem;
+   background-color: rgb(141, 11, 8);
+   color: white;
+   border: none;
+   border-radius: 5px; /* Rounded corners */
+   cursor: pointer;
+ }
+
+ button:hover {
+   background-color: rgb(220, 16, 16);
+ }
+</style>
