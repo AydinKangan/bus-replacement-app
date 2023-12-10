@@ -23,12 +23,6 @@ export const POST: RequestHandler = async ({ request }: any) => {
         const departures = getDepartures.data.departures;
 
 
-        // const getRoutes: AxiosResponse = await axios.get(
-        //     `https://ptvapiwrapper.azurewebsites.net/trains/get-all-routes`,
-        //     { headers }
-        // );
-
-        // const routes = getRoutes.data;
 
         const getDirections: AxiosResponse = await axios.get(
             `https://ptvapiwrapper.azurewebsites.net/trains/get-directions`,

@@ -114,12 +114,11 @@
 <style>
   @font-face {
     font-family: 'Quicksand';
-    src: url('./fonts/Quicksand-Regular.ttf') format('truetype');  
+    src: url('../../static/fonts/Quicksand-Regular.ttf') format('truetype');  
     font-weight: normal;
     font-style: normal;
   }
 
-  
   .header {
     margin-bottom: 10px;  
     font-size: xx-large;

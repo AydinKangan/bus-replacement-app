@@ -1,9 +1,19 @@
-<!-- ImageSide.svelte -->
-<script>
-    import team_busreplacements from '$lib/images/team_busreplacements.png';
-    // Your component logic here
-  </script>
+
   
+  <div class="image-side">
+   <img src="https://image-tc.galaxy.tf/wijpeg-4ydev2sqhfz7kw1hv6pfgujui/152831-56.jpg" alt="Flinders Street station" />
+
+
+    
+    <!-- Icon in the bottom right corner -->
+    <div class="icon">
+      <!-- Your icon content or image here -->
+      <img src="../../static/images/team_busreplacements.png" alt="team logo" class="icon">
+    </div>
+  </div>
+  
+
+
   <style>
     .image-side {
       position: relative; /* Set position to relative */
@@ -30,14 +40,3 @@
  
     }
   </style>
-  
-  <div class="image-side">
-    <img src="https://image-tc.galaxy.tf/wijpeg-4ydev2sqhfz7kw1hv6pfgujui/152831-56.jpg" alt="Image of Flinders Street station" />
-    
-    <!-- Icon in the bottom right corner -->
-    <div class="icon">
-      <!-- Your icon content or image here -->
-      <img src="/images/team_busreplacements.png" alt="team logo" class="icon">
-    </div>
-  </div>
-  
