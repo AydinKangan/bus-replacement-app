@@ -1,8 +1,11 @@
 <script lang="ts">
   import axios from "axios";
   import { onMount } from "svelte";
+  import supabase from "../routes/supabase";
 
   let weather: any;
+  let userId: string | undefined;
+  let firstName = '';
 
 
 onMount(async () => {
@@ -12,13 +15,38 @@ onMount(async () => {
     if (res.data) {
       weather = res.data;
 
-      console.log(weather.main.temp)
     }
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
     
   }
 });
+
+$: {
+  const getUser = async () => {
+    const user = await supabase.auth.getUser();
+
+    
+      userId = user.data.user?.id;
+    
+    
+  };
+  getUser();
+  if (userId) {
+    supabase
+      .from("user-data")
+      .select("*")
+      .eq("user_id", userId)
+      .then((res) => {
+        if (res.data?.length) {
+          const user: any = res.data[0];
+          firstName = user.first_name;
+          
+        }
+      })
+
+  }
+}
 
 </script>
 
@@ -51,7 +79,7 @@ onMount(async () => {
 <body>
 
     <div class="navbar">
-        <div>Welcome (first name)</div>
+        <div>{firstName ? `Welcome ${firstName}`: ""}</div>
         <div class="weather-time">
             <div class="weather-time-text">{weather ? weather.main.temp : "Loading..."} °C</div>
             <div class="weather-time-text" id="time"></div>
@@ -71,7 +99,7 @@ onMount(async () => {
 
         updateTime();
 
-        setInterval(updateTime, 60000);
+        setInterval(updateTime, 1000);
     </script>
 
 </body>

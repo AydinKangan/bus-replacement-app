@@ -4,18 +4,67 @@
   import axios from "axios";
   import { MousePointerSquare } from "lucide-svelte";
   import { onMount } from "svelte";
+  import supabase from "../supabase";
 
   let allStations: App.Station[];
   let stationOptions: AutocompleteOption<string>[]
   let selectedStation: App.Station | undefined;
+  let userId: string | undefined;
   let inputStation = '';
 
   let firstName = '';
 
   function handleSubmit() {
-    console.log('Submitted:', { firstName, selectedStation });
-    
-    goto(`/departures`);
+    if (userId) {
+    supabase
+      .from("user-data")
+      .select("*")
+      .eq("user_id", userId)
+      .then((res) => {
+        // console.log(res.data?.length);
+        if (res.data?.length) {
+          // Update existing row
+          supabase
+            .from("user-data")
+            .update({
+              first_name: firstName,
+              stop_id: selectedStation?.stopId,
+              stop_lat: selectedStation?.stopLat,
+              stop_lon: selectedStation?.stopLon,
+              stop_name: selectedStation?.stopName,
+            })
+            .eq("user_id", userId)
+            .then((res) => {
+                if (res.status >= 200 && res.status < 300) {
+                goto(`/departures`);
+              } else {
+                console.log(res);
+              }
+            });
+        } else {
+          // Add new row
+          supabase
+            .from("user-data")
+            .insert([
+              {
+                first_name: firstName,
+                user_id: userId,
+                stop_id: selectedStation?.stopId,
+                stop_lat: selectedStation?.stopLat,
+                stop_lon: selectedStation?.stopLon,
+                stop_name: selectedStation?.stopName,
+              },
+            ])
+            .then((res) => {
+              if (res.status >= 200 && res.status < 300) {
+                goto(`/departures`);
+              } else {
+                console.log(res);
+              }
+            });
+        }
+      });
+    }
   }
 
 
@@ -43,17 +92,42 @@ onMount(async () => {
       });
 
     }
+
+    const user = await supabase.auth.getUser();
+
+    if (!user.data.user) {
+      goto(`/`);
+    
+    } else {
+      userId = user.data.user?.id;
+    }
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
     
+  }
+
+  if (userId) {
+    supabase
+      .from("user-data")
+      .select("*")
+      .eq("user_id", userId)
+      .then((res) => {
+        if (res.data?.length) {
+          const user: any = res.data[0];
+          firstName = user.first_name;
+          selectedStation = allStations.find((station: App.Station) => station.stopId === user.stop_id);
+        }
+      })
+
   }
 });
 
 const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>)  => {
     selectedStation = await allStations.find((station: App.Station) => station.stopId.toString() === event.detail.value);
-    console.log(selectedStation)
+    // console.log(selectedStation)
     inputStation = "";
 }
+
 </script>
 
 
@@ -122,7 +196,7 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
 
 <!-- The form -->
 <main>
-  <form on:submit|preventDefault={handleSubmit}>
+  <div>
     <label for="firstName">First Name</label>
     <input type="text" id="firstName" bind:value={firstName} />
 
@@ -140,6 +214,6 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
       </div>
     </div>
 
-    <button type="submit">Submit</button>
-  </form>
+    <button on:click={handleSubmit}>Submit</button>
+  </div>
 </main>

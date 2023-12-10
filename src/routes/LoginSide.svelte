@@ -55,7 +55,7 @@
         console.log("data:", data);
         const user = await supabase.auth.getUser();
         console.log("user:", user);
-        goto("/usersprofile")
+        // goto("/usersprofile")
     }
     if(error) {
         console.log("error:", error);

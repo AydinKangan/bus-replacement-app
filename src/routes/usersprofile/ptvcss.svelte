@@ -1,4 +1,24 @@
- 
+
+<script lang="ts">
+  import { goto } from "$app/navigation";
+  import supabase from "../supabase";
+
+
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) console.log("Error logging out:", error.message);
+    goto("/");
+  };
+
+  const toProfile = async () => {
+    goto("/usersprofile");
+  };
+
+
+</script>
+
+
+
 <div class="page-container">
     <!-- LOGO MANAGEMENT -->
     <div class="top-bar">
@@ -9,11 +29,11 @@
   
       <!-- Profile and Log Out buttons -->
       <div class="profile-buttons">
-        <button class="profile-button">Profile</button>
+        <button on:click={toProfile} class="profile-button">Profile</button>
         <div class="icon-container">
             <img src="/images/profile_icon.png" alt="profile icon" class="profile-icon">
           </div>
-        <button class="logout-button">LOG OUT</button>
+        <button on:click={logout} class="logout-button">LOG OUT</button>
       </div>
     </div>
   

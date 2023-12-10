@@ -13,10 +13,13 @@ export const GET: RequestHandler = async () => {
         { headers }
     );
 
+
     const data = response.data.map((stop: any) => ({
         stopId: stop.stop_id,
         stopName: stop.stop_name,
         stopSuburb: stop.stop_suburb,
+        stopLat: stop.stop_latitude,
+        stopLon: stop.stop_longitude,
     }));
 
 

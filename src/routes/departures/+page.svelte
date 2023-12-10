@@ -9,6 +9,7 @@ import { MousePointerSquare } from 'lucide-svelte';
 import WeatherBar from '$lib/weather-bar.svelte';
  
 
+
 let allStations: App.Station[];
 let stationOptions: AutocompleteOption<string>[]
 let selectedStation: App.Station | undefined;
@@ -16,7 +17,11 @@ let inputStation = '';
 let departureRoutes: any[];
 let nextDepartures: any[];
 
+let userId: string | undefined;
+
 import { theme } from "../../theme";
+  import Header from '$lib/header.svelte';
+  import supabase from '../supabase';
 
 
 const skeletonTheme = () => {
@@ -69,9 +74,38 @@ const getDepartures = async () => {
 const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>)  => {
     selectedStation = await allStations.find((station: App.Station) => station.stopId.toString() === event.detail.value);
 
-   await getDepartures();
+    if (userId) {
+    supabase
+      .from("user-data")
+      .select("*")
+      .eq("user_id", userId)
+      .then((res) => {
+        // console.log(res.data?.length);
+        if (res.data?.length) {
+          // Update existing row
+          supabase
+            .from("user-data")
+            .update({
+              stop_id: selectedStation?.stopId,
+              stop_lat: selectedStation?.stopLat,
+              stop_lon: selectedStation?.stopLon,
+              stop_name: selectedStation?.stopName,
+            })
+            .eq("user_id", userId)
+            .then((res) => {
+                if (res.status >= 200 && res.status < 300) {
+              } else {
+                console.log(res);
+              }
+            });
+        } 
+      });
+    }
+
+    await getDepartures();
     inputStation = "";
 }
+
 				
 
 
@@ -100,11 +134,37 @@ onMount(async () => {
 });
 
 
+$: {
+  const getUser = async () => {
+    const user = await supabase.auth.getUser();
+
+    
+      userId = user.data.user?.id;
+    
+    
+  };
+  getUser();
+  if (userId) {
+    supabase
+      .from("user-data")
+      .select("*")
+      .eq("user_id", userId)
+      .then((res) => {
+        if (res.data?.length) {
+          const user: any = res.data[0];
+          selectedStation = allStations.find((station: App.Station) => station.stopId === user.stop_id);
+          getDepartures();
+        }
+      })
+
+  }
+}
+
 </script>
 
 
 <div>
-  <WeatherBar />
+  <Header />
   <div class="pl-[4rem] pt-[2rem]">
     <button class="btn variant-filled" use:popup={popupClick}>
       <span class="mr-2">

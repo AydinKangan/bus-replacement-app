@@ -24,3 +24,4 @@
 <body class="h-[100vh]" data-theme={themeContent}>
 	<slot />
 </body>
+

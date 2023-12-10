@@ -78,6 +78,3 @@ export const POST: RequestHandler = async ({ request }: any) => {
         return new Response("Bad Request", { status: 400 });
     }
 };
-
-
-        

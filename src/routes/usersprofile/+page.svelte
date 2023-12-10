@@ -1,15 +1,15 @@
 <script>
 
     import Userform from "./userform.svelte";
-    import Ptvcss from "./ptvcss.svelte";
-    import WeatherBar from '$lib/weather-bar.svelte';
+    import Header from "$lib/header.svelte";
+
 
 
 </script>
 
 <div> 
-<Ptvcss />
-<WeatherBar />
+
+<Header />
 <Userform />
 
 </div>
