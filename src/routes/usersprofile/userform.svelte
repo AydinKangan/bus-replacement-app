@@ -10,30 +10,62 @@
   let stationOptions: AutocompleteOption<string>[]
   let selectedStation: App.Station | undefined;
   let inputStation = '';
+  let userId: string | undefined;
 
   let firstName = '';
 
   function handleSubmit() {
-    console.log('Submitted:', { firstName, selectedStation });
+    // console.log('Submitted:', { firstName, selectedStation });
+    if (userId) {
     supabase
       .from("user-data")
-      .insert([
-        {
-          first_name: firstName,
-          stop_id: selectedStation?.stopId,
-          stop_lat: selectedStation?.stopLat,
-          stop_lon: selectedStation?.stopLon,
-          stop_name: selectedStation?.stopName,
-        },
-      ])
+      .select("*")
+      .eq("user_id", userId)
       .then((res) => {
-        if (res.status === 201) {
-          goto(`/departures`);
+        // console.log(res.data?.length);
+        if (res.data?.length) {
+          // Update existing row
+          supabase
+            .from("user-data")
+            .update({
+              first_name: firstName,
+              stop_id: selectedStation?.stopId,
+              stop_lat: selectedStation?.stopLat,
+              stop_lon: selectedStation?.stopLon,
+              stop_name: selectedStation?.stopName,
+            })
+            .eq("user_id", userId)
+            .then((res) => {
+                if (res.status >= 200 && res.status < 300) {
+                goto(`/departures`);
+              } else {
+                console.log(res);
+              }
+            });
+        } else {
+          // Add new row
+          supabase
+            .from("user-data")
+            .insert([
+              {
+                first_name: firstName,
+                user_id: userId,
+                stop_id: selectedStation?.stopId,
+                stop_lat: selectedStation?.stopLat,
+                stop_lon: selectedStation?.stopLon,
+                stop_name: selectedStation?.stopName,
+              },
+            ])
+            .then((res) => {
+              if (res.status >= 200 && res.status < 300) {
+                goto(`/departures`);
+              } else {
+                console.log(res);
+              }
+            });
         }
-        else {
-          console.log(res)}
-      })
-    
+      });
+    }
   }
 
 
@@ -61,6 +93,15 @@ onMount(async () => {
       });
 
     }
+
+    const user = await supabase.auth.getUser();
+
+    if (!user.data.user) {
+      goto(`/`);
+    
+    } else {
+      userId = user.data.user?.id;
+    }
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
     
@@ -69,7 +110,7 @@ onMount(async () => {
 
 const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>)  => {
     selectedStation = await allStations.find((station: App.Station) => station.stopId.toString() === event.detail.value);
-    console.log(selectedStation)
+    // console.log(selectedStation)
     inputStation = "";
 }
 </script>
