@@ -9,13 +9,12 @@
   let allStations: App.Station[];
   let stationOptions: AutocompleteOption<string>[]
   let selectedStation: App.Station | undefined;
-  let inputStation = '';
   let userId: string | undefined;
+  let inputStation = '';
 
   let firstName = '';
 
   function handleSubmit() {
-    // console.log('Submitted:', { firstName, selectedStation });
     if (userId) {
     supabase
       .from("user-data")
@@ -106,6 +105,21 @@ onMount(async () => {
     console.error("An error occurred while fetching data:", error);
     
   }
+
+  if (userId) {
+    supabase
+      .from("user-data")
+      .select("*")
+      .eq("user_id", userId)
+      .then((res) => {
+        if (res.data?.length) {
+          const user: any = res.data[0];
+          firstName = user.first_name;
+          selectedStation = allStations.find((station: App.Station) => station.stopId === user.stop_id);
+        }
+      })
+
+  }
 });
 
 const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>)  => {
@@ -113,6 +127,7 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
     // console.log(selectedStation)
     inputStation = "";
 }
+
 </script>
 
 

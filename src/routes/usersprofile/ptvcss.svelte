@@ -1,6 +1,5 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { onMount } from "svelte";
   import supabase from "../supabase";
 
 
@@ -10,12 +9,10 @@
     goto("/");
   };
 
-  // onMount(async () => {
-  //   const user = await supabase.auth.getUser();
-  //   if (user) {
-  //     console.log(user)
-  //   }
-  // });
+  const toProfile = async () => {
+    goto("/usersprofile");
+  };
+
 
 </script>
 
@@ -30,7 +27,7 @@
   
       <!-- Profile and Log Out buttons -->
       <div class="profile-buttons">
-        <button class="profile-button">Profile</button>
+        <button on:click={toProfile} class="profile-button">Profile</button>
         <div class="icon-container">
             <img src="/images/profile_icon.png" alt="profile icon" class="profile-icon">
           </div>
