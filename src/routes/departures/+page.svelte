@@ -210,22 +210,25 @@ $: {
       </table>
     </div>
     <div>
-      <button class="round-button" on:click={skeletonTheme}>
-        Toggle Theme
-      </button>
-    </div>
+     <!-- ... rest of your code ... -->
+<div>
+  <button class="round-button" on:click={skeletonTheme}>
+    Toggle Theme
+  </button>
+</div>
+<!-- ... rest of your code ... -->
 
-    <style>
-      .round-button {
-        border: none;
-        border-radius: 50%;
-        padding: 10px 20px; /* Adjust the padding based on your preference */
-        background-color: #fff; /* White background */
-        color: #000; /* Black text */
-        cursor: pointer;
-      }
-    
-      .round-button:hover {
-        background-color: #eee; /* Change the background color on hover if desired */
-      }
-    </style>
+<style>
+  button.round-button {
+    border: none;
+    border-radius: 50%;
+    padding: 10px 20px; /* Adjust the padding based on your preference */
+    background-color: #fff; /* White background */
+    color: #000; /* Black text */
+    cursor: pointer;
+  }
+
+  button.round-button:hover {
+    background-color: #eee; /* Change the background color on hover if desired */
+  }
+</style>
