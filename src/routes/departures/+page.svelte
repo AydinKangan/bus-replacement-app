@@ -211,7 +211,7 @@ $: {
     </div>
     <div>
       <button on:click={skeletonTheme}>
-          skeleton Theme
+          Toggle Theme
       </button>
   </div>
 </div>
