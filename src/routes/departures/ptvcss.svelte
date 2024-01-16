@@ -17,8 +17,7 @@
       </div>
     </div>
   
-    <!-- the black divider -->
-    <div class="bottom-bar">
+   
       <span></span>
     </div>
   </div>
