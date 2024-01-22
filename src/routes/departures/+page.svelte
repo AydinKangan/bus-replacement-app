@@ -19,15 +19,11 @@ let nextDepartures: any[];
 
 let userId: string | undefined;
 
-import { theme } from "../../theme";
   import Header from '$lib/header.svelte';
   import supabase from '../supabase';
   import { goto } from '$app/navigation';
 
 
-const skeletonTheme = () => {
-    theme.update(val => val = "skeleton")
-}
 
 const popupClick: PopupSettings = {
   event: 'click',
@@ -144,6 +140,7 @@ onMount(async () => {
       });
 
     }
+      document.body.setAttribute('data-theme', "ptvTheme");
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
     
@@ -211,9 +208,4 @@ const getUser = async () => {
         {/if}
       </table>
     </div>
-    <div>
-      <button on:click={skeletonTheme}>
-          skeleton Theme
-      </button>
-  </div>
 </div>
