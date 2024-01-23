@@ -6,7 +6,6 @@ import axios from "axios";
 import { onMount } from "svelte";
 import { popup } from '@skeletonlabs/skeleton';
 import { MousePointerSquare } from 'lucide-svelte';
-import WeatherBar from '$lib/weather-bar.svelte';
  
 
 
@@ -110,22 +109,6 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
 
 onMount(async () => {
   try {
-    getUser();
-  if (userId) {
-    supabase
-      .from("user-data")
-      .select("*")
-      .eq("user_id", userId)
-      .then((res) => {
-        if (res.data?.length) {
-          const user: any = res.data[0];
-          selectedStation = allStations.find((station: App.Station) => station.stopId === user.stop_id);
-          getDepartures();
-        }
-      })
-
-  }
-  
     const res = await axios.get("/api/get-all-stations");
 
     if (res.data) {
@@ -140,7 +123,9 @@ onMount(async () => {
       });
 
     }
-      document.body.setAttribute('data-theme', "ptvTheme");
+    await getUser();
+  
+    
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
     
@@ -154,6 +139,31 @@ const getUser = async () => {
       goto(`/`);
     } else {
       userId = user.data.user?.id;
+      if (userId) {
+      await supabase
+      .from("user-data")
+      .select("*")
+      .eq("user_id", userId)
+      .then((res) => {
+        if (res.data?.length) {
+          const user: any = res.data[0];          
+          selectedStation = allStations.find((station: App.Station) => station.stopId === user.stop_id);
+          getDepartures();
+        }
+      })
+
+      let userTheme: string;
+      await supabase
+            .from("user-data")
+            .select("*")
+            .eq("user_id", userId)
+            .then((res) => {
+                if (res.data?.length) {
+                userTheme = res.data[0].selected_theme
+                document.body.setAttribute('data-theme', userTheme);
+                }
+            })
+      }
     }
     
   
@@ -164,6 +174,7 @@ const getUser = async () => {
 
 <div>
   <Header />
+  {#if userId}
   <div class="pl-[4rem] pt-[2rem]">
     <button class="btn variant-filled" use:popup={popupClick}>
       <span class="mr-2">
@@ -208,4 +219,6 @@ const getUser = async () => {
         {/if}
       </table>
     </div>
+  {/if }
+  
 </div>

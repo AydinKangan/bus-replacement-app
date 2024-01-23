@@ -17,8 +17,22 @@
 
         } else {
         user = loggedUser
+        let userTheme: string;
+        const userId = user.data.user?.id;
+        if (userId) {
+            supabase
+            .from("user-data")
+            .select("*")
+            .eq("user_id", userId)
+            .then((res) => {
+                if (res.data?.length) {
+                userTheme = res.data[0].selected_theme
+                document.body.setAttribute('data-theme', userTheme);
+                }
+            })
         }
-        document.body.setAttribute('data-theme', "ptvTheme");
+
+        }
     })
 
 </script>
@@ -29,7 +43,7 @@
         {#if user}
             <div class="flex flex-row justify-evenly">
                     <Userform userId={user.data.user?.id}/> 
-                    <ThemeSelector />
+                    <ThemeSelector {user}/>
             </div>
         {/if}
     </div>
