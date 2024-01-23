@@ -9,7 +9,7 @@
   let allStations: App.Station[];
   let stationOptions: AutocompleteOption<string>[]
   let selectedStation: App.Station | undefined;
-  let userId: string | undefined;
+  export let userId: string | undefined;
   let inputStation = '';
 
   let firstName = '';
@@ -93,14 +93,7 @@ onMount(async () => {
 
     }
 
-    const user = await supabase.auth.getUser();
-
-    if (!user.data.user) {
-      goto(`/`);
-    
-    } else {
-      userId = user.data.user?.id;
-    }
+   
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
     
