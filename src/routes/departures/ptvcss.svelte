@@ -80,7 +80,7 @@
       color: #fff;
       font-size: small;
       border: none;
-      border-radius: 10px;
+      border-radius: 0.25rem;
 
       cursor: pointer;
     }

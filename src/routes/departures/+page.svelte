@@ -176,7 +176,7 @@ const getUser = async () => {
   <Header />
   {#if userId}
   <div class="pl-[4rem] pt-[2rem]">
-    <button class="btn variant-filled" use:popup={popupClick}>
+    <button class="btn variant-filled rounded" use:popup={popupClick}>
       <span class="mr-2">
         {selectedStation ? selectedStation.stopName : "Select a station"}
       </span>
