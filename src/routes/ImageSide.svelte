@@ -8,7 +8,7 @@
     <!-- Icon in the bottom right corner -->
     <div class="icon">
       <!-- Your icon content or image here -->
-      <img src="../../static/images/team_busreplacements.png" alt="team logo" class="icon">
+      <img src="../../images/team_busreplacements.png" alt="team logo" class="icon">
     </div>
   </div>
   
