@@ -16,9 +16,6 @@
         <button class="logout-button">LOG OUT</button>
       </div>
     </div>
-  
-    <!-- the black divider -->
-    <div class="bottom-bar">
       <span></span>
     </div>
   </div>
