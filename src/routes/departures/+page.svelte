@@ -6,7 +6,6 @@ import axios from "axios";
 import { onMount } from "svelte";
 import { popup } from '@skeletonlabs/skeleton';
 import { MousePointerSquare } from 'lucide-svelte';
-import WeatherBar from '$lib/weather-bar.svelte';
  
 
 
@@ -19,14 +18,11 @@ let nextDepartures: any[];
 
 let userId: string | undefined;
 
-import { theme } from "../../theme";
   import Header from '$lib/header.svelte';
   import supabase from '../supabase';
+  import { goto } from '$app/navigation';
 
 
-const skeletonTheme = () => {
-    theme.update(val => val = "skeleton")
-}
 
 const popupClick: PopupSettings = {
   event: 'click',
@@ -127,37 +123,50 @@ onMount(async () => {
       });
 
     }
+    await getUser();
+  
+    
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
     
   }
 });
 
-
-$: {
-  const getUser = async () => {
+const getUser = async () => {
     const user = await supabase.auth.getUser();
 
-    
+    if (!user.data.user) {
+      goto(`/`);
+    } else {
       userId = user.data.user?.id;
-    
-    
-  };
-  getUser();
-  if (userId) {
-    supabase
+      if (userId) {
+      await supabase
       .from("user-data")
       .select("*")
       .eq("user_id", userId)
       .then((res) => {
         if (res.data?.length) {
-          const user: any = res.data[0];
+          const user: any = res.data[0];          
           selectedStation = allStations.find((station: App.Station) => station.stopId === user.stop_id);
           getDepartures();
         }
       })
 
-  }
+      let userTheme: string;
+      await supabase
+            .from("user-data")
+            .select("*")
+            .eq("user_id", userId)
+            .then((res) => {
+                if (res.data?.length) {
+                userTheme = res.data[0].selected_theme
+                document.body.setAttribute('data-theme', userTheme);
+                }
+            })
+      }
+    }
+    
+  
 }
 
 </script>
@@ -165,8 +174,9 @@ $: {
 
 <div>
   <Header />
+  {#if userId}
   <div class="pl-[4rem] pt-[2rem]">
-    <button class="btn variant-filled" use:popup={popupClick}>
+    <button class="btn variant-filled rounded" use:popup={popupClick}>
       <span class="mr-2">
         {selectedStation ? selectedStation.stopName : "Select a station"}
       </span>
@@ -175,6 +185,7 @@ $: {
       <input class="input h-8 pl-3" type="search" name="demo" bind:value={inputStation} placeholder="Search..." />
       <Autocomplete bind:input={inputStation} options={stationOptions} on:selection={onStationSelection} />
     </div>
+    <p>prod test</p>
   </div>
     <div class="table-container px-[4rem] py-[2rem]">
       <table class="table table-hover">
@@ -209,4 +220,6 @@ $: {
         {/if}
       </table>
     </div>
- 
+  {/if }
+  
+</div>
