@@ -15,6 +15,7 @@ let selectedStation: App.Station | undefined;
 let inputStation = '';
 let departureRoutes: any[];
 let nextDepartures: any[];
+let loading = false;
 
 let userId: string | undefined;
 
@@ -33,6 +34,7 @@ const popupClick: PopupSettings = {
 const getDepartures = async () => {
   if (selectedStation) {
     try {
+      loading = true;
       const request = await axios.post("/api/get-departures", {
         stopId: selectedStation.stopId,
       }, {
@@ -59,8 +61,10 @@ const getDepartures = async () => {
       nextDepartures = departuresWithTime;
     } catch (error) {
       console.error("Error while making the request:", error);
+    } finally {
+      loading = false;
     }
-  }
+  } 
 }
 
 
@@ -68,6 +72,9 @@ const getDepartures = async () => {
 			
 
 const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>)  => {
+    try {
+    loading = true;
+
     selectedStation = await allStations.find((station: App.Station) => station.stopId.toString() === event.detail.value);
 
     if (userId) {
@@ -100,6 +107,11 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
 
     await getDepartures();
     inputStation = "";
+  } catch (error) {
+    console.error("Error while making the request:", error);
+  } finally {
+    loading = false;
+  }
 }
 
 				
@@ -109,6 +121,7 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
 
 onMount(async () => {
   try {
+
     const res = await axios.get("/api/get-all-stations");
 
     if (res.data) {
@@ -199,7 +212,7 @@ const getUser = async () => {
               <th class="text-center">Departing</th>
             </tr>
           </thead>
-          {#if departureRoutes}
+          {#if !loading}
             {#each departureRoutes as route}
               {#if nextDepartures.filter(dep => dep.direction_id === route.direction_id).length > 0}
                 <tbody>
