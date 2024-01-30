@@ -16,6 +16,9 @@
         <button class="logout-button">LOG OUT</button>
       </div>
     </div>
+  
+    <!-- the black divider -->
+    <div class="bottom-bar">
       <span></span>
     </div>
   </div>
@@ -77,7 +80,7 @@
       color: #fff;
       font-size: small;
       border: none;
-      border-radius: 10px;
+      border-radius: 0.25rem;
 
       cursor: pointer;
     }

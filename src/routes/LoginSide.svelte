@@ -103,7 +103,7 @@
     <div class="centered-button">
       <button class="github-button" on:click={()=>signInGitHub()}>
         <div class="icon-container">
-          <img src="/images/github_icon.png" alt="GitHub Icon" class="icon">
+          <img src="../../images/github_icon.png" alt="GitHub Icon" class="icon">
         </div>
         Login with GitHub
       </button>
@@ -114,7 +114,7 @@
 <style>
   @font-face {
     font-family: 'Quicksand';
-    src: url('../../static/fonts/Quicksand-Regular.ttf') format('truetype');  
+    src: url('../../fonts/Quicksand-Regular.ttf') format('truetype');  
     font-weight: normal;
     font-style: normal;
   }
