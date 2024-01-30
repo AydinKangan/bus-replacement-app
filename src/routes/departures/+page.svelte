@@ -1,6 +1,6 @@
 
 <script lang="ts">
-import { Autocomplete } from '@skeletonlabs/skeleton';
+import { Autocomplete, ProgressRadial } from '@skeletonlabs/skeleton';
 import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 import axios from "axios";
 import { onMount } from "svelte";
@@ -187,37 +187,44 @@ const getUser = async () => {
     </div>
   </div>
     <div class="table-container px-[4rem] py-[2rem]">
-      <table class="table table-hover rounded">
-        <thead>
-          <tr class="">
-            <th class="text-center">Destination</th>
-            <th class="text-center">Departing</th>
-            <th class="text-center">Departing</th>
-            <th class="text-center">Departing</th>
-            <th class="text-center">Departing</th>
-            <th class="text-center">Departing</th>
-          </tr>
-        </thead>
-        {#if departureRoutes}
-          {#each departureRoutes as route}
-            {#if nextDepartures.filter(dep => dep.direction_id === route.direction_id).length > 0}
-              <tbody>
-                <tr>
-                    <td class="flex flex-col text-center justify-center"><span class="mt-3">{route.direction_name}</span></td>
-                  {#each nextDepartures.filter(dep => dep.direction_id === route.direction_id).sort((a, b) => a.time_until_departure - b.time_until_departure) as departure}
-                    <td>
-                      <span class="flex flex-col text-center">
-                        {departure.time_until_departure !== 0 ? `${departure.time_until_departure} min` : "Now"}
-                        <p>Platform: {departure.platform_number === null ? "Not Found" : departure.platform_number}</p>
-                      </span>
-                    </td>
-                  {/each}
-                </tr>
-              </tbody>
-            {/if}
-          {/each}
-        {/if}
-      </table>
+      {#if departureRoutes}
+        <table class="table table-hover rounded">
+          <thead>
+            <tr class="">
+              <th class="text-center">Destination</th>
+              <th class="text-center">Departing</th>
+              <th class="text-center">Departing</th>
+              <th class="text-center">Departing</th>
+              <th class="text-center">Departing</th>
+              <th class="text-center">Departing</th>
+            </tr>
+          </thead>
+          {#if departureRoutes}
+            {#each departureRoutes as route}
+              {#if nextDepartures.filter(dep => dep.direction_id === route.direction_id).length > 0}
+                <tbody>
+                  <tr>
+                      <td class="flex flex-col text-center justify-center"><span class="mt-3">{route.direction_name}</span></td>
+                    {#each nextDepartures.filter(dep => dep.direction_id === route.direction_id).sort((a, b) => a.time_until_departure - b.time_until_departure) as departure}
+                      <td>
+                        <span class="flex flex-col text-center">
+                          {departure.time_until_departure !== 0 ? `${departure.time_until_departure} min` : "Now"}
+                          <p>Platform: {departure.platform_number === null ? "Not Found" : departure.platform_number}</p>
+                        </span>
+                      </td>
+                    {/each}
+                  </tr>
+                </tbody>
+              {/if}
+            {/each}
+          {/if}
+        </table>
+      {:else}
+        <div class="flex justify-center items-center h-[50vh]">
+          <ProgressRadial />
+        </div>
+      {/if}
+      
     </div>
   {/if }
   
