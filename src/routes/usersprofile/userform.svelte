@@ -166,7 +166,7 @@ const onStationSelection = async (event: CustomEvent<AutocompleteOption<string>>
    border: none;
    border-radius: 5px;
    cursor: pointer;
-   margin-left: -35px;
+   margin-left: -42px;
    margin-bottom: 50px;
  }
 
