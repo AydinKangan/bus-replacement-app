@@ -30,12 +30,14 @@
       .then((res) => {
         if (res.data?.length) {
           databaseTheme = res.data[0].selected_theme;
-          selectedTheme = themes.find((t) => t.name === databaseTheme);
+          if (databaseTheme.length > 0) {
+            selectedTheme = themes.find((t) => t.name === databaseTheme);
 
+          } else {
+            changeTheme("ptvTheme")
+          }
         }
-        else {
-          selectedTheme = themes.find((t) => t.name === "ptvTheme");
-        }
+        
       });
   }
      
