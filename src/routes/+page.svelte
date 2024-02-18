@@ -1,6 +1,6 @@
 <script lang=ts>
- import LoginSide from './LoginSide.svelte';
- import ImageSide from './ImageSide.svelte';
+ import LoginSide from '$lib/home-page/login-side.svelte';
+ import ImageSide from '$lib/home-page/image-side.svelte';
  import { onMount } from 'svelte';
 
  let isSmallScreen = false;

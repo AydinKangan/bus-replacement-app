@@ -1,7 +1,8 @@
 <script lang="ts">
   import axios from "axios";
   import { onMount } from "svelte";
-  import supabase from "../routes/supabase";
+  import supabase from "$lib/supabase";
+
 
   let weather: any;
   let userId: string | undefined;

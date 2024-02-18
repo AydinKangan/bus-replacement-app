@@ -9,7 +9,7 @@
   import axios from "axios";
   import { MousePointerSquare } from "lucide-svelte";
   import { onMount } from "svelte";
-  import supabase from "../supabase";
+  import supabase from "$lib/supabase";
 
   let allStations: App.Station[];
   let stationOptions: AutocompleteOption<string>[];

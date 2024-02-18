@@ -2,7 +2,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
-  import supabase from "../supabase";
+  import supabase from "$lib/supabase";
 
 
   const logout = async () => {
@@ -12,7 +12,7 @@
   };
 
   const toProfile = async () => {
-    goto("/usersprofile");
+    goto("/user");
   };
 
   let isSmallScreen = false;

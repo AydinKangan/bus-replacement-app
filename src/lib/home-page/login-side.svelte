@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import supabase from "./supabase.js";
+  import supabase from "$lib/supabase";
+
   import { ProgressRadial } from "@skeletonlabs/skeleton";
 
   import { getModalStore, type ModalSettings } from "@skeletonlabs/skeleton";
@@ -31,7 +32,7 @@
         loginErrorMessage = error.message;
       } else {
         loginErrorMessage = "";
-        goto("/usersprofile");
+        goto("/user");
       }
     } catch (err: any) {
       console.error("An error occurred:", err.message);
@@ -64,14 +65,13 @@
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: window.location.origin + "/usersprofile",
+        redirectTo: window.location.origin + "/user",
       },
     });
     if (data) {
       console.log("data:", data);
       const user = await supabase.auth.getUser();
       console.log("user:", user);
-      // goto("/usersprofile")
     }
     if (error) {
       console.log("error:", error);

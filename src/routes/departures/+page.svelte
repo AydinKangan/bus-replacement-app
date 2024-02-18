@@ -8,6 +8,9 @@
   import { onMount } from "svelte";
   import { popup } from "@skeletonlabs/skeleton";
   import { MousePointerSquare } from "lucide-svelte";
+  import Header from "$lib/header/header.svelte";
+  import supabase from "$lib/supabase";
+  import { goto } from "$app/navigation";
 
   let allStations: App.Station[];
   let stationOptions: AutocompleteOption<string>[];
@@ -36,9 +39,7 @@
 
   let userId: string | undefined;
 
-  import Header from "$lib/header.svelte";
-  import supabase from "../supabase";
-  import { goto } from "$app/navigation";
+
 
   const popupClick: PopupSettings = {
     event: "click",

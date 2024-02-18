@@ -1,5 +1,6 @@
 <script lang="ts">
-  import supabase from "../routes/supabase";
+    import supabase from "$lib/supabase";
+
 
   import ptvIcon from "$lib/ptv-icon.jpeg";
   export let user: any;

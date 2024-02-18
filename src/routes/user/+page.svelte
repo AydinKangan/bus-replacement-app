@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Userform from "./userform.svelte";
-  import Header from "$lib/header.svelte";
+  import Header from "$lib/header/header.svelte";
   import ThemeSelector from "$lib/theme-selector.svelte";
   import { onMount } from "svelte";
-  import supabase from "../supabase";
+  import supabase from "$lib/supabase";
   import { goto } from "$app/navigation";
+  import UserForm from "$lib/user-form.svelte";
 
   let user: any;
   let isSmallScreen = false;
@@ -57,7 +57,7 @@
         class="flex flex-row justify-evenly items-center {isSmallScreen ? 'flex-col space-y-10 py-6' : 'flex-row space-x-4'}"
         style="{!isSmallScreen ? 'height: calc(100vh - 204px)' : ''}"
     >
-        <Userform userId={user.data.user?.id} />
+        <UserForm userId={user.data.user?.id} />
         <ThemeSelector {user} />
       </div>
     {/if}
