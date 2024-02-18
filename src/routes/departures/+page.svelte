@@ -194,8 +194,8 @@ const getUser = async () => {
         {selectedStation ? selectedStation.stopName : "Select a station"}
       </span>
       <MousePointerSquare class="w-5 h-5" /></button>
-    <div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1" data-popup="popupClick">
-      <input class="input h-8 pl-3" type="search" name="demo" bind:value={inputStation} placeholder="Search..." />
+    <div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto rounded" tabindex="-1" data-popup="popupClick">
+      <input class="input h-8 pl-3 rounded" type="search" name="demo" bind:value={inputStation} placeholder="Search..." />
       <Autocomplete bind:input={inputStation} options={stationOptions} on:selection={onStationSelection} />
     </div>
   </div>
