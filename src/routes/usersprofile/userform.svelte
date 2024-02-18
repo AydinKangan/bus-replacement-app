@@ -19,6 +19,25 @@
   let error = false;
   let firstName = "";
 
+  let isSmallScreen = false;
+
+  onMount(() => {
+    const mediaQuery = window.matchMedia("(max-width: 600px)");
+    isSmallScreen = mediaQuery.matches;
+
+    const handleResize = (event: any) => {
+      isSmallScreen = event.matches;
+    };
+
+    mediaQuery.addEventListener("change", handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
+  });
+
+  
+
   function handleSubmit() {
     if (!firstName || !selectedStation) {
       error = true;
@@ -164,7 +183,7 @@
       />
     </div>
   </div>
-  <button on:click={handleSubmit}>Submit</button>
+  <button class={isSmallScreen ? "w-full" : ""} on:click={handleSubmit}>Submit</button>
 </div>
 
 <style>
