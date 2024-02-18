@@ -9,7 +9,7 @@
   import axios from "axios";
   import { MousePointerSquare } from "lucide-svelte";
   import { onMount } from "svelte";
-  import supabase from "../supabase";
+  import supabase from "$lib/supabase";
 
   let allStations: App.Station[];
   let stationOptions: AutocompleteOption<string>[];
@@ -18,6 +18,25 @@
   let inputStation = "";
   let error = false;
   let firstName = "";
+
+  let isSmallScreen = false;
+
+  onMount(() => {
+    const mediaQuery = window.matchMedia("(max-width: 600px)");
+    isSmallScreen = mediaQuery.matches;
+
+    const handleResize = (event: any) => {
+      isSmallScreen = event.matches;
+    };
+
+    mediaQuery.addEventListener("change", handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
+  });
+
+  
 
   function handleSubmit() {
     if (!firstName || !selectedStation) {
@@ -164,7 +183,7 @@
       />
     </div>
   </div>
-  <button on:click={handleSubmit}>Submit</button>
+  <button class={isSmallScreen ? "w-full" : ""} on:click={handleSubmit}>Submit</button>
 </div>
 
 <style>
