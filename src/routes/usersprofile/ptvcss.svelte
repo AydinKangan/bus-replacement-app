@@ -1,6 +1,7 @@
 
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
   import supabase from "../supabase";
 
 
@@ -14,6 +15,23 @@
     goto("/usersprofile");
   };
 
+  let isSmallScreen = false;
+
+onMount(() => {
+  const mediaQuery = window.matchMedia('(max-width: 780px)');
+  isSmallScreen = mediaQuery.matches;
+
+  const handleResize = (event: any) => {
+    isSmallScreen = event.matches;
+  };
+
+  mediaQuery.addEventListener('change', handleResize);
+
+  return () => {
+    mediaQuery.removeEventListener('change', handleResize);
+  };
+});
+
 
 </script>
 
@@ -23,23 +41,25 @@
     <!-- LOGO MANAGEMENT -->
     <div class="top-bar">
       <a href="https://www.ptv.vic.gov.au/">
-        <img src="/images/Public_Transport_Victoria_logo.png" alt="PTV logo" class="logo" />
+        <img src="/images/Public_Transport_Victoria_logo.png" alt="PTV logo" class="logo {isSmallScreen ? "w-[8rem]" : "w-[12rem]"}" />
       </a>
+      {#if !isSmallScreen}
       <img src="/images/Melbournecity.jpeg" alt="melbourne city" class="melb-image" />
+      {/if}
   
       <!-- Profile and Log Out buttons -->
-      <div class="profile-buttons">
+      <div class="flex items-center {isSmallScreen ? "flex-col-reverse space-x-0 gap-4" : "flex-row space-x-2"}">
+        <div class="flex flex-row space-x-2">
         <button on:click={toProfile} class="profile-button">Profile</button>
         <div class="icon-container">
             <img src="/images/profile_icon.png" alt="profile icon" class="profile-icon">
-          </div>
+          </div></div>
         <button on:click={logout} class="logout-button">LOG OUT</button>
       </div>
     </div>
   
     <!-- the black divider -->
     <div class="bottom-bar">
-      <span></span>
     </div>
   </div>
   
@@ -47,7 +67,7 @@
     /* TOP BAR */
     .top-bar {
       background-color: hsl(0, 0%, 100%);
-      padding: 0px 20px;
+      padding: 0px 16px;
       color: #333;
       display: flex;
       flex-direction: row;
@@ -61,12 +81,12 @@
       margin-top: -10px;
       margin-right: 10px;
       height: auto;
-      width: 400px;
+
     }
   
     /* melbourne banner */
     .melb-image {
-      width: 100%;
+      width: 50%;
       height: 100%;
       margin-left: 50px;
       margin-right: 100px;
@@ -75,34 +95,29 @@
     }
   
     /* Profile and Log Out buttons */
-    .profile-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: -100px;
-    }
+   
     .profile-icon{
         width: 25px;  
-        height:20px; 
-        margin-top:10px;
+        height: auto; 
     }
 
     .profile-button{
      text-decoration: underline;
      cursor: pointer;
-     margin-top:-15px;
     }
 
     .logout-button {
       padding: 5px;
-      margin-bottom: 20px;
       width: 130px;
       background-color: rgb(0, 0, 0); /* Adjust the color */
       color: #fff;
       font-size: small;
       border: none;
       border-radius: 10px;
-
       cursor: pointer;
+    }
+    .logout-button:hover {
+      background-color: #cc3434;
     }
   
 
