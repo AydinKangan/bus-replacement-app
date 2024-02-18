@@ -1,10 +1,24 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import supabase from './supabase.js';
+  import { ProgressRadial } from '@skeletonlabs/skeleton';
+
+import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
+			
+      const modalStore = getModalStore();
+            
+
+      const registrationModal: ModalSettings = {
+	type: 'alert',
+	title: 'Verification',
+	body: 'A confirmation link has been send to your email.',
+};
+
 
   let email = '';
   let password = '';
   let loginErrorMessage = '';
+  let loading: boolean = false
 
   const login = async () => {
     try {
@@ -26,8 +40,10 @@
     }
   };
 
+  
   const register = async () => {
     try {
+      loading = true
       const { error } = await supabase.auth.signUp({
         email: email,
         password: password,
@@ -36,10 +52,13 @@
       if (error) {
         console.error('Registration error:', error.message);
       } else {
-        goto("/usersprofile")
+        modalStore.trigger(registrationModal);
+
       }
     } catch (err) {
       console.error('An error occurred during registration:', err);
+    } finally {
+      loading = false
     }
   };
 
@@ -94,7 +113,19 @@
 
   <!-- Red Button group -->
 <div class="button-group">
-  <button class="red-button" on:click={register}>Sign up</button>
+  <button class="red-button" on:click={register}>
+  {#if loading}
+  <div class="w-full flex justify-center">
+    <div class="w-6 h-auto flex">
+      <ProgressRadial />
+    </div>
+
+  </div>
+
+  {:else}
+  <p>Sign Up</p>
+  {/if}
+  </button>
   <button class="red-button" on:click={login}>Login</button>
 </div>
 

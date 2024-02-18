@@ -1,6 +1,7 @@
 <script lang=ts>
  import LoginSide from './LoginSide.svelte';
  import ImageSide from './ImageSide.svelte';
+
 </script>
 
 <style> 

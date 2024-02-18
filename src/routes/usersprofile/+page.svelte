@@ -41,12 +41,15 @@
     <div>
         <Header />
         {#if user}
-            <div class="flex flex-row justify-evenly">
-                    <Userform userId={user.data.user?.id}/> 
-                    <ThemeSelector {user}/>
+            <div class="flex flex-row justify-evenly items-center" style="height: calc(100vh - 204px);">
+                <Userform userId={user.data.user?.id}/> 
+                <ThemeSelector {user}/>
             </div>
         {/if}
     </div>
 </div>
 
  
+<style>
+
+</style>
