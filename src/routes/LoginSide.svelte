@@ -12,6 +12,8 @@ import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 	type: 'alert',
 	title: 'Verification',
 	body: 'A confirmation link has been send to your email.',
+  buttonTextCancel: 'Okay',
+  
 };
 
 
