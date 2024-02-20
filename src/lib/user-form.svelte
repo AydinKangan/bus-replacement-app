@@ -10,6 +10,7 @@
   import { MousePointerSquare } from "lucide-svelte";
   import { onMount } from "svelte";
   import supabase from "$lib/supabase";
+  import { ProgressRadial } from "@skeletonlabs/skeleton";
 
   let allStations: App.Station[];
   let stationOptions: AutocompleteOption<string>[];
@@ -18,6 +19,7 @@
   let inputStation = "";
   let error = false;
   let firstName = "";
+  let loading = false;
 
   let isSmallScreen = false;
 
@@ -36,14 +38,13 @@
     };
   });
 
-  
-
   function handleSubmit() {
     if (!firstName || !selectedStation) {
       error = true;
     } else {
       error = false;
       if (userId) {
+        loading = true;
         supabase
           .from("user-data")
           .select("*")
@@ -92,6 +93,7 @@
                 });
             }
           });
+        loading = false;
       }
     }
   }
@@ -104,6 +106,7 @@
 
   onMount(async () => {
     try {
+      loading = true;
       const res = await axios.get("/api/get-all-stations");
 
       if (res.data) {
@@ -119,9 +122,12 @@
       }
     } catch (error) {
       console.error("An error occurred while fetching data:", error);
+    } finally {
+      loading = false;
     }
 
     if (userId) {
+      loading = true;
       supabase
         .from("user-data")
         .select("*")
@@ -135,6 +141,7 @@
             );
           }
         });
+      loading = false;
     }
   });
 
@@ -151,18 +158,51 @@
 
 <!-- The form -->
 <div class="old-form">
-  <label class={firstName === '' && error ? 'text-red-600' : 'text-black'} for="firstName">First Name</label>
-  <input class="border-2 text-black outline-none {firstName === '' && error ? 'border-red-600' : 'border-black'}" type="text" id="firstName" bind:value={firstName} />
-  
-  
-  <label class={selectedStation === undefined && error ? 'text-red-600' : 'text-black'} for="stationName">Station Name</label>
+  <label
+    class={firstName === "" && error ? "text-red-600" : "text-black"}
+    for="firstName">First Name</label
+  >
+  <div class="flex w-[full] justify-center items-center">
+    {#if loading}
+      <div class="flex w-4 h-auto">
+        <ProgressRadial />
+      </div>
+    {:else}
+      <input
+        class="border-2 text-black outline-none {firstName === '' && error
+          ? 'border-red-600'
+          : 'border-black'}"
+        type="text"
+        id="firstName"
+        bind:value={firstName}
+      />
+    {/if}
+  </div>
+  <label
+    class={selectedStation === undefined && error
+      ? "text-red-600"
+      : "text-black"}
+    for="stationName">Station Name</label
+  >
 
   <div>
-    <button class="select-station-btn w-full " use:popup={popupClick}>
-      <span class="mr-2 ">
-        {selectedStation ? selectedStation.stopName : "Select a station"}
-      </span>
-      <MousePointerSquare class="w-5 h-5 " />
+    <button
+      disabled={loading}
+      class="select-station-btn w-full {loading
+        ? '!cursor-not-allowed opacity-50'
+        : ''}"
+      use:popup={popupClick}
+    >
+      {#if loading}
+        <div class="flex w-4 h-auto">
+          <ProgressRadial />
+        </div>
+      {:else}
+        <span class="mr-2">
+          {selectedStation ? selectedStation.stopName : "Select a station"}
+        </span>
+        <MousePointerSquare class="w-5 h-5 " />
+      {/if}
     </button>
     <div
       class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto rounded"
@@ -183,7 +223,13 @@
       />
     </div>
   </div>
-  <button class={isSmallScreen ? "w-full" : ""} on:click={handleSubmit}>Submit</button>
+  <button
+    disabled={loading}
+    class=" {loading ? '!cursor-not-allowed opacity-50' : ''} {isSmallScreen
+      ? 'w-full'
+      : ''}"
+    on:click={handleSubmit}>Submit</button
+  >
 </div>
 
 <style>
@@ -209,6 +255,7 @@
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
+    width: 17rem;
   }
 
   label {
