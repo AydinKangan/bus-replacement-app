@@ -151,7 +151,6 @@
     selectedStation = await allStations.find(
       (station: App.Station) => station.stopId.toString() === event.detail.value
     );
-    // console.log(selectedStation)
     inputStation = "";
   };
 </script>
