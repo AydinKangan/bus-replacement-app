@@ -1,6 +1,5 @@
 <script lang="ts">
-    import supabase from "$lib/supabase";
-
+  import supabase from "$lib/supabase";
 
   import ptvIcon from "$lib/ptv-icon.jpeg";
   export let user: any;
@@ -31,7 +30,7 @@
           databaseTheme = res.data[0].selected_theme;
           if (databaseTheme.length > 0) {
             selectedTheme = themes.find((t) => t.name === databaseTheme);
-          } 
+          }
         } else {
           changeTheme("ptvTheme");
         }
@@ -51,8 +50,8 @@
         .select("*")
         .eq("user_id", userId)
         .then((res) => {
+          // Update
           if (res.data?.length) {
-            // Update existing row
             supabase
               .from("user-data")
               .update({
@@ -61,8 +60,26 @@
               .eq("user_id", userId)
               .then((res) => {
                 if (res.status >= 200 && res.status < 300) {
+                  console.log("Success");
                 } else {
-                  console.log(res);
+                  console.log("Failed");
+                }
+              });
+          } else {
+            // Insert
+            supabase
+              .from("user-data")
+              .insert([
+                {
+                  user_id: userId,
+                  selected_theme: theme,
+                },
+              ])
+              .then((res) => {
+                if (res.status >= 200 && res.status < 300) {
+                  console.log("Success");
+                } else {
+                  console.log("Failed");
                 }
               });
           }
